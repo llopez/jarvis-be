@@ -29,6 +29,17 @@ namespace :nodes do
           pin.type = pin_data[:type]
           pin.save
         end
+
+        ActionCable.server.broadcast(
+          'nodes_channel',
+          JSON.parse(
+            NodesController.render(
+              partial: 'index',
+              object: Node.all,
+              as: :nodes
+            )
+          )
+        )
       end
     end
   end
