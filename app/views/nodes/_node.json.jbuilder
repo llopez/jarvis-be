@@ -1,9 +1,13 @@
-json.extract! node, :id, :chipid, :status, :ip, :ping_at
+json.set! :id, node.id.to_s
+json.extract! node, :chipid, :status, :ip, :ping_at
+
 json.pins node.pins do |pin|
-  json.extract! pin, :id, :number, :type, :mode
+  json.set! :id, pin.id.to_s
+  json.extract! pin, :number, :type, :mode
   json.thing do
     if pin.thing
-      json.extract! pin.thing, :id, :name, :state
+      json.set! :id, pin.thing.id.to_s
+      json.extract! pin.thing, :name, :state, :state_schema
       json.actions pin.thing.actions do |action|
         json.extract! action, :id, :name, :value
       end
