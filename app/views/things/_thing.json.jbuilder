@@ -1,7 +1,6 @@
-json.extract! thing, :id, :name, :state
+json.set! :id, thing.id.to_s
+json.extract! thing, :name, :state
 json.pin do
-  json.extract! thing.pin, :id, :number, :type, :mode
-end
-json.actions thing.actions do |action|
-  json.extract! action, :id, :name, :value
+  json.set! :id, thing.pin.id.to_s
+  json.extract! thing.pin, :number, :type, :mode
 end

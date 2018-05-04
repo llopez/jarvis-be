@@ -14,10 +14,12 @@ class NodesChannel < ApplicationCable::Channel
     ActionCable.server.broadcast(
       'nodes_channel',
       JSON.parse(
-        NodesController.render(
-          partial: 'index',
-          object: Node.all,
-          as: :nodes
+        ApplicationController.render(
+          partial: 'all/index',
+          locals: {
+            nodes: Node.all,
+            things: Thing.all
+          }
         )
       )
     )
