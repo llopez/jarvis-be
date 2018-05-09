@@ -8,16 +8,51 @@ class NodesChannel < ApplicationCable::Channel
     # Any cleanup needed when channel is unsubscribed
   end
 
+  def load_things
+    send_nodes
+  end
+
+  def remove_thing(data)
+    thing = Thing.find(data['id'])
+    if thing.destroy
+      ActionCable.server.broadcast(
+        'nodes_channel',
+        type: 'REMOVE_THING',
+        payload: JSON.parse(
+          ThingsController.render(
+            partial: 'thing',
+            object: thing
+          )
+        )
+      )
+    end
+  end
+
+  def update_thing(data)
+    thing = Thing.find(data['id'])
+    thing.update(data.slice('state'))
+    ActionCable.server.broadcast(
+      'nodes_channel',
+      type: 'UPDATE_THING',
+      payload: JSON.parse(
+        ThingsController.render(
+          partial: 'thing',
+          object: thing
+        )
+      )
+    )
+  end
+
   private
 
   def send_nodes
     ActionCable.server.broadcast(
       'nodes_channel',
-      JSON.parse(
-        ApplicationController.render(
-          partial: 'all/index',
+      type: 'LOAD_THINGS',
+      payload: JSON.parse(
+        ThingsController.render(
+          partial: 'index',
           locals: {
-            nodes: Node.all,
             things: Thing.all
           }
         )
