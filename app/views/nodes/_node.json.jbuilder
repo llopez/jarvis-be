@@ -7,7 +7,7 @@ json.pins node.pins do |pin|
   json.thing do
     if pin.thing
       json.set! :id, pin.thing.id.to_s
-      json.extract! pin.thing, :name, :state, :state_schema
+      json.extract! pin.thing, :name, :state
       json.actions pin.thing.actions do |action|
         json.extract! action, :id, :name, :value
       end
