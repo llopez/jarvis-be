@@ -4,4 +4,6 @@ Rails.application.routes.draw do
 
   get 'things' => 'things#index'
   get 'things/:id' => 'things#show'
+
+  post 'auth' => 'auths#create'
 end
