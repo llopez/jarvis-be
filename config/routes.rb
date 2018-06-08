@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   get 'things' => 'things#index'
   get 'things/:id' => 'things#show'
+  patch 'things/:id' => 'things#update'
 
   post 'auth' => 'auths#create'
 end
