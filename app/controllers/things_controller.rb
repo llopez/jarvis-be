@@ -1,4 +1,6 @@
 class ThingsController < ApplicationController
+  before_action :authenticate
+
   def index
     @things = Thing.all
   end
