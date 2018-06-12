@@ -11,11 +11,26 @@ class ThingsController < ApplicationController
 
   def update
     @thing = Thing.find params[:id]
-    @thing.update_attributes(thing_params)
+    broadcast(@thing) if @thing.update_attributes(thing_params)
     render :show
   end
 
   private
+
+  # TODO: Replace user_token by other uniq identifier
+  def broadcast(thing)
+    ActionCable.server.broadcast(
+      'things_channel',
+      user_token: @current_user.auth_token,
+      type: 'ITEM_UPDATED',
+      payload: JSON.parse(
+        ThingsController.render(
+          partial: 'thing',
+          object: thing
+        )
+      )
+    )
+  end
 
   def thing_params
     params.permit(:name, state: [:value])
