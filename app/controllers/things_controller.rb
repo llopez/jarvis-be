@@ -11,11 +11,23 @@ class ThingsController < ApplicationController
 
   def update
     @thing = Thing.find params[:id]
-    broadcast(@thing) if @thing.update_attributes(thing_params)
+    if @thing.update_attributes(thing_params)
+      publish(@thing)
+      broadcast(@thing)
+    end
     render :show
   end
 
   private
+
+  def publish(thing)
+    MQTT::Client.connect('localhost') do |c|
+      c.publish("/node/#{thing.pin.node.chipid}", {
+        state: thing.state['value'],
+        pin: thing.pin.number
+      }.to_json)
+    end
+  end
 
   # TODO: Replace user_token by other uniq identifier
   def broadcast(thing)
