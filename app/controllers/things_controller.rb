@@ -21,7 +21,16 @@ class ThingsController < ApplicationController
   private
 
   def publish(thing)
-    MQTT::Client.connect('localhost') do |c|
+    uri = URI.parse ENV['CLOUDMQTT_URL'] || 'mqtt://localhost:1883'
+
+    conn_opts = {
+      remote_host: uri.host,
+      remote_port: uri.port,
+      username: uri.user,
+      password: uri.password
+    }
+
+    MQTT::Client.connect(conn_opts) do |c|
       c.publish("/node/#{thing.pin.node.chipid}", {
         state: thing.state['value'],
         pin: thing.pin.number
