@@ -21,7 +21,7 @@ class ThingsController < ApplicationController
   private
 
   def publish(thing)
-    uri = URI.parse ENV['CLOUDMQTT_URL'] || 'mqtt://localhost:1883'
+    uri = URI.parse ENV['CLOUDMQTT_URL']
 
     conn_opts = {
       remote_host: uri.host,

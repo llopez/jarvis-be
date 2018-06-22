@@ -1,0 +1,2 @@
+development:
+  CLOUDMQTT_URL: mqtt://localhost:1883
