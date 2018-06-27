@@ -22,7 +22,7 @@ namespace :nodes do
     }
 
     MQTT::Client.connect(conn_opts) do |c|
-      c.get('/jarvis') do |topic, message|
+      c.get('/jarvis/ping') do |topic, message|
         logger.debug "#{topic}: #{message}"
         puts "#{topic}: #{message}"
         data = JSON.parse(message, symbolize_names: true)
