@@ -24,6 +24,7 @@ namespace :nodes do
     MQTT::Client.connect(conn_opts) do |c|
       c.get('/jarvis') do |topic, message|
         logger.debug "#{topic}: #{message}"
+        puts "#{topic}: #{message}"
         data = JSON.parse(message, symbolize_names: true)
         # 1) Iterate Rules and see if something need to be executed
         # 2) Save to mongo
