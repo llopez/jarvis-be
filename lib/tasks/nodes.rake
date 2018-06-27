@@ -12,7 +12,16 @@ namespace :nodes do
   task sync: :environment do
     logger = Logger.new('log/mqtt.log')
 
-    MQTT::Client.connect('localhost') do |c|
+    uri = URI.parse ENV['CLOUDMQTT_URL']
+
+    conn_opts = {
+      remote_host: uri.host,
+      remote_port: uri.port,
+      username: uri.user,
+      password: uri.password
+    }
+
+    MQTT::Client.connect(conn_opts) do |c|
       c.get('/jarvis') do |topic, message|
         logger.debug "#{topic}: #{message}"
         data = JSON.parse(message, symbolize_names: true)
