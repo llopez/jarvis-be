@@ -32,8 +32,9 @@ class ThingsController < ApplicationController
 
     MQTT::Client.connect(conn_opts) do |c|
       c.publish("/node/#{thing.pin.node.chipid}", {
-        state: thing.state['value'],
-        pin: thing.pin.number
+        value: thing.state['value'],
+        pin: thing.pin.number,
+        type: thing.pin.type
       }.to_json)
     end
   end
