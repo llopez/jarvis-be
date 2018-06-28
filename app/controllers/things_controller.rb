@@ -34,7 +34,7 @@ class ThingsController < ApplicationController
       c.publish("/node/#{thing.pin.node.chipid}", {
         value: thing.state['value'] == 'on' ? '0x8804B43' : '0x88C0051',
         pin: thing.pin.number,
-        type: thing.pin.type == 'aircon' ? 'ir' : thing.pin.type
+        type: thing.pin.type == :aircon ? 'ir' : thing.pin.type
       }.to_json)
     end
   end
